@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  	   xmlns:h="http://xmlns.jcp.org/jsf/html"
+  	   xmlns:f="http://xmlns.jcp.org/jsf/core"
+  	   xmlns:p="http://primefaces.org/ui" >
+<h:head>
+	<meta charset="UTF-8"></meta>
+	<title>Gestão de Pessoa</title>
+	
+	<h:outputScript name="js/utils.js" />
+	
+	<h:outputStylesheet library="css" name="estilo.css"/>
+	
+
+	
+</h:head>
+
+<h:body>
+	 <header>
+	 
+	 	<h:outputText value="SisPessoa"/>
+	 </header>
+
+	 <div class="content">
+		<h:outputText value="Bem-vindo ao sistema de gestão de pessoa"/>
+		
+		
+					
+					<p:growl id="messages" showDetail="true" />
+					
+					<h:form id="searchForm">
+					    <p:toolbar style="margin-bottom: 20px;">
+					      
+						        <p:toolbarGroup>
+						            <p:inputText placeholder="Pesquisar..." value="#{pessoaBean.pesquisaNome}" />
+						            <p:commandButton value="Pesquisar" action="#{pessoaBean.pesquisar()}" update="pessoasTable" />
+						            <p:commandButton value="Novo Registro" action="#{pessoaBean.prepararNovoRegistro()}" oncomplete="PF('pessoaDialog').show();" update=":pessoaForm" />
+
+						        </p:toolbarGroup>
+					    </p:toolbar>
+					</h:form>
+					
+					
+					
+					<p:dialog header="Gestão de Pessoa" widgetVar="pessoaDialog" modal="true" responsive="true">
+					    <h:form id="pessoaForm">
+							    <h:panelGrid columns="2">
+							        <p:outputLabel for="nome" value="Nome: " />
+							        <p:inputText id="nome" value="#{pessoaBean.pessoa.nome}" />
+							
+							        <p:outputLabel for="idade" value="Idade: " />
+							        <p:inputText id="idade" value="#{pessoaBean.pessoa.idade}" onkeypress="return somenteNumeros(event);">
+							            <f:convertNumber integerOnly="true" />
+							        </p:inputText>
+							
+							        <p:outputLabel for="sexo" value="Sexo: " />
+							        <p:selectOneMenu id="sexo" value="#{pessoaBean.pessoa.sexo}">
+							            <f:selectItem itemLabel="Masculino" itemValue="M" />
+							            <f:selectItem itemLabel="Feminino" itemValue="F" />
+							        </p:selectOneMenu>
+							
+							
+							  		<p:outputLabel for="estado" value="Estado: " />
+										<p:selectOneMenu id="estado" value="#{pessoaBean.selectedEstadoSigla}" converter="estadoConverter">
+										    <f:selectItem itemLabel="Selecione o Estado" itemValue="" />
+										    <f:selectItems value="#{pessoaBean.estados}" var="estado" itemLabel="#{estado.nome}" itemValue="#{estado}" />
+										    <p:ajax event="change" listener="#{pessoaBean.carregarCidades}" update="cidade" />
+										</p:selectOneMenu>
+									
+									<p:outputLabel for="cidade" value="Cidade: " />									
+									<p:selectOneMenu id="cidade" value="#{pessoaBean.selectedCidade}" converter="cidadeConverter">
+									    <f:selectItem itemLabel="Selecione a Cidade" itemValue="" />
+									    <f:selectItems value="#{pessoaBean.cidades}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}" />
+									</p:selectOneMenu>
+
+							
+							        <p:outputLabel for="logradouro" value="Logradouro" />
+							        <p:inputText id="logradouro" value="#{pessoaBean.pessoa.enderecos[0].logradouro}" />
+							
+							        <p:outputLabel for="numero" value="Número:" />
+							        <p:inputText id="numero" value="#{pessoaBean.pessoa.enderecos[0].numero}"  onkeypress="return somenteNumeros(event);">
+							            <f:convertNumber integerOnly="true" />
+							        </p:inputText>
+							
+							        <h:outputLabel for="cep" value="CEP:" />
+							        <p:inputMask id="cep" value="#{pessoaBean.pessoa.enderecos[0].cep}" mask="99999-999" />
+							
+							        <p:commandButton value="Salvar" action="#{pessoaBean.salvar()}" update="pessoasTable, pessoaForm, messages" oncomplete="PF('pessoaDialog').hide();" />
+
+							    </h:panelGrid>
+							</h:form>
+
+		</p:dialog>
+		
+		
+		<p:dataTable var="pessoa" value="#{pessoaBean.pessoas}" widgetVar="pessoasTable" rows="10" paginator="true" id="pessoasTable">
+				    
+				    <p:column headerText="Nome">
+				        <h:outputText value="#{pessoa.nome}" />
+				    </p:column>
+				    
+				    
+				    <p:column headerText="Idade">
+				        <h:outputText value="#{pessoa.idade}" />
+				    </p:column>
+				    
+				    
+				    <p:column headerText="Sexo">
+				        <h:outputText value="#{pessoa.sexo}" />
+				    </p:column>
+				    
+				    
+				    <p:column headerText="Estado">
+				        <h:outputText value="#{pessoa.enderecos[0].estado}" />
+				    </p:column>
+				    
+				    
+				    <p:column headerText="Cidade">
+				        <h:outputText value="#{pessoa.enderecos[0].cidade}" />
+				    </p:column>
+				    
+				    
+				    <p:column headerText="Logradouro">
+				        <h:outputText value="#{pessoa.enderecos[0].logradouro}" />
+				    </p:column>
+				    
+				    
+				    <p:column headerText="Número">
+				        <h:outputText value="#{pessoa.enderecos[0].numero}" />
+				    </p:column>
+				    
+				    
+				    <p:column headerText="CEP">
+				        <h:outputText value="#{pessoa.enderecos[0].cep}" />
+				    </p:column>
+				    
+				    
+				    <p:column style="width:150px;text-align:center">
+					     <h:form id="dataForm">
+					        <p:commandButton icon="ui-icon-pencil" title="Editar" actionListener="#{pessoaBean.prepararEdicao(pessoa)}" update=":pessoaForm" oncomplete="PF('pessoaDialog').show();" />
+					        <p:commandButton icon="ui-icon-close" title="Excluir" actionListener="#{pessoaBean.remover(pessoa)}" update="pessoasTable" />
+						 </h:form>				   
+					</p:column>
+				
+				</p:dataTable>
+						
+		
+		
+		
+	  </div>
+	  
+	
+</h:body>
+
+</html>
+

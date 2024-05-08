@@ -1,0 +1,67 @@
+# Arquivos compilados
+*.class
+
+# Pacotes binários
+*.jar
+*.war
+*.ear
+
+# Arquivos de log
+*.log
+
+# Diretórios de build gerados
+/target/
+/out/
+/build/
+/bin/
+
+# Diretórios de dependência
+/dependency/
+
+# Arquivos e diretórios de configuração do Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+lib/
+
+# Arquivos e pastas específicos do Eclipse
+/.classpath
+/.project
+/.settings/
+
+# Arquivos e pastas específicos do IntelliJ IDEA
+/.idea/
+*.iml
+*.iws
+
+# Arquivos e pastas específicos do Visual Studio Code
+.vscode/
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+
+# Pasta de configuração local do Tomcat
+/conf/
+/logs/
+/webapps/
+/work/
+/temp/
+
+# Arquivos específicos de ambiente/IDE que contêm segredos ou configurações locais
+*.keystore
+*.swp
+*~
+/.env
+.env.local
+
+# Arquivos de banco de dados local
+*.h2.db
+*.mv.db
+
+# Outros arquivos e diretórios que podem ser sensíveis
+/backup/
+/secrets/

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<context>
+	<Manager pathname="" />
+	
+	<Resource 
+		auth="container"
+		name="BeanManager"
+		type="javax.enterprise.inject.spi.BeanManager"
+		factory="org.jboss.weld.resources.ManagerObjectFactory" />
+	
+	<Resource name="jdbc/sispessoaDS"
+              auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost:5432/sispessoa"
+              username="postgres"
+              password="123456"
+              maxTotal="20"
+              maxIdle="10"
+              maxWaitMillis="-1"/>
+	
+</context>
