@@ -27,3 +27,15 @@ Versões Utilizadas:
 - Java: 1.8
 - PostgreSQL Driver: 42.7.2
 - Tomcat: 8.5
+
+
+• Uma explicação sobre as decisões técnicas e arquiteturais do seu desafio;
+ - Foi ultilizado CDI para injeção de dependência, devido já possuir tomcat configurado, por isso não optei por ultilizar EJB
+• Uma justificativa para o uso de frameworks ou bibliotecas (caso sejam usadas);
+   - Foi ultilizado JUnit e Mockito para os testes unitários. 
+   - httpclient para realizar requisição ao serviço do Ibge para obter dados de estado e cidade
+   - Foi usado json para converter resultado da requisição em um objeto json
+• Instruções sobre como compilar e executar o projeto;
+  - vide o item Execução do projeto
+• Instruções sobre como executar os testes da solução;
+  - Os testes podem ser executados ultilizado JUnit
